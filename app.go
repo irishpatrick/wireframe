@@ -50,7 +50,7 @@ func main() {
 	fmt.Println("OpenGL version", version)
 
 	// Configure the vertex and fragment shaders
-	program, err := newProgram("./vertex.glsl", "./fragment.glsl")
+	program, err := newProgram("assets/vertex.glsl", "assets/fragment.glsl")
 	if err != nil {
 		panic(err)
 	}
@@ -75,7 +75,7 @@ func main() {
 	gl.BindFragDataLocation(program, 0, gl.Str("outputColor\x00"))
 
 	// Load the texture
-	texture, err := newTexture("square.png")
+	texture, err := newTexture("assets/square.png")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -101,7 +101,7 @@ func main() {
 	// Configure global settings
 	gl.Enable(gl.DEPTH_TEST)
 	gl.DepthFunc(gl.LESS)
-	gl.ClearColor(1.0, 1.0, 1.0, 1.0)
+	gl.ClearColor(0.2, 0.2, 0.2, 1.0)
 
 	angle := 0.0
 	previousTime := glfw.GetTime()
@@ -133,38 +133,6 @@ func main() {
 		glfw.PollEvents()
 	}
 }
-
-var vertexShader = `
-#version 330
-
-uniform mat4 projection;
-uniform mat4 camera;
-uniform mat4 model;
-
-in vec3 vert;
-in vec2 vertTexCoord;
-
-out vec2 fragTexCoord;
-
-void main() {
-    fragTexCoord = vertTexCoord;
-    gl_Position = projection * camera * model * vec4(vert, 1);
-}
-` + "\x00"
-
-var fragmentShader = `
-#version 330
-
-uniform sampler2D tex;
-
-in vec2 fragTexCoord;
-
-out vec4 outputColor;
-
-void main() {
-    outputColor = texture(tex, fragTexCoord);
-}
-` + "\x00"
 
 var cubeVertices = []float32{
 	//  X, Y, Z, U, V
