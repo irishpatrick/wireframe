@@ -25,6 +25,7 @@ func init() {
 }
 
 func main() {
+	
 	if err := glfw.Init(); err != nil {
 		log.Fatalln("failed to initialize glfw:", err)
 	}
@@ -56,6 +57,8 @@ func main() {
 	}
 
 	gl.UseProgram(program)
+
+	loadMesh("assets/cube.obj", program)
 
 	projection := mgl32.Perspective(mgl32.DegToRad(45.0), float32(windowWidth)/windowHeight, 0.1, 10.0)
 	projectionUniform := gl.GetUniformLocation(program, gl.Str("projection\x00"))
@@ -101,7 +104,7 @@ func main() {
 	// Configure global settings
 	gl.Enable(gl.DEPTH_TEST)
 	gl.DepthFunc(gl.LESS)
-	gl.ClearColor(0.2, 0.2, 0.2, 1.0)
+	gl.ClearColor(0.25, 0.25, 0.25, 1.0)
 
 	angle := 0.0
 	previousTime := glfw.GetTime()
