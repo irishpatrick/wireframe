@@ -19,9 +19,11 @@ func readFile(fn string) (string, error) {
 	stat, err := f.Stat()
 	check(err)
 
-	buffer := make([]byte, stat.Size())
+	buffer := make([]byte, stat.Size()+1)
 	_, err = f.Read(buffer)
 	check(err)
+
+    buffer[stat.Size()] = 0x00
 
 	f.Close()
 

@@ -41,9 +41,10 @@ func main() {
 	}
 	window.MakeContextCurrent()
 
-	// Initialize Glow
+	// Initialize GL
 	if err := gl.Init(); err != nil {
-		panic(err)
+		fmt.Println("cannot init gl");
+        panic(err)
 	}
 
 	version := gl.GoStr(gl.GetString(gl.VERSION))
@@ -57,7 +58,7 @@ func main() {
 
 	gl.UseProgram(program)
 
-	loadMesh("assets/cube.obj", program)
+	//loadMesh("assets/cube.obj", program)
 
 	projection := mgl32.Perspective(mgl32.DegToRad(45.0), float32(windowWidth)/windowHeight, 0.1, 10.0)
 	projectionUniform := gl.GetUniformLocation(program, gl.Str("projection\x00"))
