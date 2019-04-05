@@ -22,6 +22,8 @@ func loadMesh(fn string, program uint32) (Mesh, error) {
 
     v := make([]float32, 0)
     vt := make([]float32, 0)
+    n := make([]float32,0)
+    f := make([]int32, 0)
     buf := make([]float32, 0)
 
     // parse
@@ -32,23 +34,41 @@ func loadMesh(fn string, program uint32) (Mesh, error) {
         if strings.HasPrefix(line, "v ") {
             parts := strings.Split(line, " ")
             for i := 1; i<4; i++ {
-                f, err := strconv.ParseFloat(parts[i], 32)
+                j, err := strconv.ParseFloat(parts[i], 32)
                 check(err)
-                v = append(v, float32(f))
+                v = append(v, float32(j))
             }
         }
         if strings.HasPrefix(line, "vt ") {
             parts := strings.Split(line, " ")
             for i := 1; i<3; i++ {
-                f, err := strconv.ParseFloat(parts[i], 32)
+                j, err := strconv.ParseFloat(parts[i], 32)
                 check(err)
-                vt = append(vt, float32(f))
+                vt = append(vt, float32(j))
+            }
+        }
+        if strings.HasPrefix(line, "n ") {
+            parts := strings.Split(line, " ")
+            for i := 1; i<3; i++ {
+                j, err := strconv.ParseFloat(parts[i], 32)
+                check(err)
+                n = append(n, float32(j))
+            }
+        }
+        if strings.HasPrefix(line, "f ") {
+            parts := strings.Split(line, " ")
+            references := strings.Split(parts[1], "/")
+            for i := 0; i<len(references); i++ {
+                j, err := strconv.ParseInt(references[i], 0, 32)
+                check(err)
+                f = append(f, int32(j))
             }
         }
     }
 
     // weave
     l := len(v) / 3
+    fmt.Println("vertices: ", l)
     for i := 0; i < l; i++ {
         for j := 0; j < 3; j++ {
             buf = append(buf, v[j])
