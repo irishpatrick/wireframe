@@ -104,7 +104,7 @@ func main() {
 		model = mgl32.HomogRotate3D(float32(angle), mgl32.Vec3{0, 1, 0})
 
 		// Render
-		gl.UseProgram(program)
+		/*gl.UseProgram(program)
 		gl.UniformMatrix4fv(modelUniform, 1, false, &model[0])
 
 		gl.BindVertexArray(mesh.vao)
@@ -112,7 +112,13 @@ func main() {
 		gl.ActiveTexture(gl.TEXTURE0)
 		gl.BindTexture(gl.TEXTURE_2D, texture)
 
-		gl.DrawArrays(gl.TRIANGLES, 0, 2901*2*3)
+		gl.DrawArrays(gl.TRIANGLES, 0, 2901*2*3)*/
+		mp := &mesh
+		mp.rotation[1] += float32(elapsed)
+		fmt.Printf("%f\n", mesh.rotation.Y())
+
+		mp.update()
+		mp.draw(program, modelUniform, texture)
 
 		// Maintenance
 		window.SwapBuffers()

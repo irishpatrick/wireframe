@@ -101,9 +101,8 @@ func loadMesh(fn string, program uint32) (Mesh, error) {
 	}
 
 	mesh.buffer = make([]float32, len(buf))
+	mesh.faces = int32(len(f) / 3)
 	copy(mesh.buffer, buf)
-
-	fmt.Printf("%d\n", len(f)/3)
 
 	gl.GenVertexArrays(1, &mesh.vao)
 	gl.BindVertexArray(mesh.vao)
