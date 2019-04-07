@@ -60,6 +60,7 @@ func main() {
 
 	mesh, err := loadMesh("assets/monkey.obj", program)
 	check(err)
+	mesh.init()
 
 	projection := mgl32.Perspective(mgl32.DegToRad(45.0), float32(windowWidth)/windowHeight, 0.1, 10.0)
 	projectionUniform := gl.GetUniformLocation(program, gl.Str("projection\x00"))
@@ -113,12 +114,12 @@ func main() {
 		gl.BindTexture(gl.TEXTURE_2D, texture)
 
 		gl.DrawArrays(gl.TRIANGLES, 0, 2901*2*3)*/
-		mp := &mesh
-		mp.rotation[1] += float32(elapsed)
-		fmt.Printf("%f\n", mesh.rotation.Y())
 
-		mp.update()
-		mp.draw(program, modelUniform, texture)
+		mesh.rotation[1] += float32(elapsed)
+		//fmt.Printf("%f\n", mesh.rotation.Y())
+
+		mesh.update()
+		mesh.draw(program, modelUniform, texture)
 
 		// Maintenance
 		window.SwapBuffers()

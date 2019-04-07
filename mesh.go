@@ -21,6 +21,15 @@ type Mesh struct {
 	scale    mgl32.Vec3
 }
 
+func (m *Mesh) init() {
+	m.position[0] = 0
+	m.position[1] = 0
+	m.position[2] = 0
+	m.scale[0] = 1
+	m.scale[1] = 1
+	m.scale[2] = 1
+}
+
 func (m *Mesh) update() {
 	ihat := mgl32.Vec3{}
 	jhat := mgl32.Vec3{}
@@ -39,10 +48,11 @@ func (m *Mesh) update() {
 	r = r.Mul4(rz)
 	s := mgl32.Scale3D(m.scale.X(), m.scale.Y(), m.scale.Z())
 
-	m.model.Mul4(r)
-	m.model.Mul4(s)
-	m.model.Mul4(t)
+	m.model = m.model.Mul4(t)
+	m.model = m.model.Mul4(r)
+	m.model = m.model.Mul4(s)
 
+	//fmt.Printf("%v\n%v\n%v\n%v\n", m.model.Row(0), m.model.Row(1), m.model.Row(2), m.model.Row(3))
 }
 
 func (m *Mesh) draw(program uint32, modelUniform int32, texture uint32) {
